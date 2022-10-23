@@ -13,15 +13,6 @@ main {
     max-width: 1200px;
 }
 
-span {
-    display: inline-block;
-    text-decoration: none;
-}
-
-.justify-title {
-    display: flex;
-    justify-content: space-between;
-}
 
 #accordion {
     background-color: white;
