@@ -9,7 +9,40 @@ a {
 a.left {
     padding-left: 5px;
 }
+main {
+    max-width: 1200px;
+}
 
+span {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.justify-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+#accordion {
+    background-color: white;
+    width: 92vw;
+    text-align: left;
+    transition: 0.4s;
+    border: none;
+    padding: 0px;
+    color: blue;
+}
+
+.panel {
+    padding: 0 1em;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+}
+
+.rotate{
+    transform: rotate(90deg);
+}
 a:hover {
     text-decoration: underline;
 }
