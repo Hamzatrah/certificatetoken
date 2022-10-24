@@ -5,7 +5,9 @@ body {
 a {
     text-decoration: none;
 }
-
+* {
+    font-family: 'Garamond', Garamond, serif;
+}
 a.left {
     padding-left: 5px;
 }
@@ -34,12 +36,19 @@ main {
 .rotate{
     transform: rotate(90deg);
 }
+
 a:hover {
     text-decoration: underline;
 }
 
 a:visited {
     color: blue;
+}
+
+h2 {
+    font-size: 2.6em;
+    text-decoration: underline;
+    margin: 0 0 0.6em 0;
 }
 
 button {
@@ -60,12 +69,7 @@ button:hover {
     cursor: pointer;
 }
 
-/* model-viewer {
-    width: 100vw;
-    height: 100vh;
-    --progress-bar-color: transparent;
-    position: fixed;
-} */
+
 iframe {
      width: 100vw;
      height: 100vh;
@@ -117,11 +121,6 @@ a.top {
 }
 
 .english {
-    padding: 12vh 4vw;
-    text-align: justify;
-}
-
-.japanese {
     padding: 12vh 4vw;
     text-align: justify;
 }
