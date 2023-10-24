@@ -15,23 +15,38 @@
   <script>
     function rollQuantumDie(times) {
       let result = "Rolling the quantum die " + times + " times: ";
+      let ascii = "";
       for (let i = 0; i < times; i++) {
-        result += Math.floor(Math.random() * 6) + 1 + ", ";
+        const roll = Math.floor(Math.random() * 6) + 1;
+        result += roll + ", ";
+        ascii += generateAsciiArt(roll);
       }
-      return result.slice(0, -2);
+      return {result: result.slice(0, -2), ascii: ascii};
+    }
+
+    function generateAsciiArt(roll) {
+      const faces = [
+        "[     ]",
+        "[*    ]",
+        "[*  * ]",
+        "[* * *]",
+        "[** **]",
+        "[*****]"
+      ];
+      return faces[roll - 1] + "\n";
     }
 
     function queryVirtualQuantumField(input) {
       let response = "";
-      // Fusion processor integrates here, adding a layer of complexity.
-      response = rollQuantumDie(4000);
+      const {result, ascii} = rollQuantumDie(4000);
+      response = result + "\nASCII Art:\n" + ascii;
       document.getElementById('output').innerHTML = response;
       copyToClipboard(response);
     }
 
     function getResponse() {
       const user_input = document.getElementById('user_input').value;
-      const output = queryVirtualQuantumField(user_input);
+      queryVirtualQuantumField(user_input);
     }
 
     function copyToClipboard(text) {
