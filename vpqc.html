@@ -2,6 +2,12 @@
 <html>
 <head>
   <title>Virtual Quantum Chatbot</title>
+  <style>
+    .die {
+      font-family: monospace;
+      white-space: pre;
+    }
+  </style>
 </head>
 <body>
 
@@ -9,63 +15,66 @@
 
   <input type="text" id="user_input" placeholder="Type your query...">
   <button onclick="getResponse()">Ask</button>
+  <button onclick="copyToClipboard()">Copy to Clipboard</button>
 
   <div id="output"></div>
 
   <script>
-    function copyToClipboard(text) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-    }
-
-    function dieToAscii(dieNumber) {
-      const dieFaces = {
-        1: "[     ]<br>[  o  ]<br>[     ]",
-        2: "[o    ]<br>[     ]<br>[    o]",
-        3: "[o    ]<br>[  o  ]<br>[    o]",
-        4: "[o   o]<br>[     ]<br>[o   o]",
-        5: "[o   o]<br>[  o  ]<br>[o   o]",
-        6: "[o   o]<br>[o   o]<br>[o   o]",
+    function dieToAscii(roll) {
+      const faces = {
+        1: "[     ]\n[  *  ]\n[     ]",
+        2: "[*    ]\n[     ]\n[    *]",
+        3: "[*    ]\n[  *  ]\n[    *]",
+        4: "[*   *]\n[     ]\n[*   *]",
+        5: "[*   *]\n[  *  ]\n[*   *]",
+        6: "[*   *]\n[*   *]\n[*   *]"
       };
-      return dieFaces[dieNumber];
+      return faces[roll];
     }
 
     function rollQuantumDie(times) {
-      let result = [];
-      result.push("Rolling the quantum die " + times + " times:<br>");
+      const output = document.getElementById('output');
+      output.innerHTML = "Rolling the quantum die " + times + " times:<br>";
       for (let i = 0; i < times; i++) {
-        const roll = Math.floor(Math.random() * 6) + 1;
-        result.push(dieToAscii(roll));
-        result.push("<br><br>");
+        let roll = Math.floor(Math.random() * 6) + 1;
+        
+        // Your 'Hadamard' and 'Pauli-X' operations here
+        
+        const dieDiv = document.createElement('div');
+        dieDiv.classList.add('die');
+        dieDiv.innerHTML = dieToAscii(roll);
+        output.appendChild(dieDiv);
       }
-      return result.join("");
     }
 
     function queryVirtualQuantumField(input) {
       let response = "";
       if (input.includes("how are you")) {
         response = "I'm just a bunch of qutrits, but thanks for asking!";
-      } else if (input.includes("quantum die")) {
-        response = rollQuantumDie(4000);
+      } else if (input.includes("roll the quantum die")) {
+        rollQuantumDie(4); // roll 4 times for demonstration
+        return; // Skip appending text response
       } else if (input.includes("tell me a joke")) {
-        response = "Why did the quantum state cross the road? To be in three places at once! nowask me to roll the die";
+        response = "Why did the quantum state cross the road? To be in three places at once!";
       } else if (input.includes("quantum")) {
-        response = "Ah, quantum, the realm of possibilities! now rollthe die";
+        response = "Ah, quantum, the realm of possibilities!";
       } else {
         response = "I don't understand, but I'm striving to learn more.";
       }
-      copyToClipboard(response);
-      return response;
+      const output = document.getElementById('output');
+      output.innerHTML = response;
     }
 
     function getResponse() {
       const user_input = document.getElementById('user_input').value;
-      const output = queryVirtualQuantumField(user_input);
-      document.getElementById('output').innerHTML = output;
+      queryVirtualQuantumField(user_input);
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById('output').innerText;
+      navigator.clipboard.writeText(output).then(() => {
+        alert('Copied to clipboard');
+      });
     }
   </script>
 
