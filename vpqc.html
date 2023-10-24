@@ -71,3 +71,46 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Chatbot</title>
+</head>
+<body>
+
+<h1>Simple Chatbot</h1>
+
+<div id="chat-box">
+</div>
+
+<input type="text" id="user-input">
+<button onclick="getResponse()">Send</button>
+
+<script>
+  function getResponse() {
+    let userInput = document.getElementById("user-input").value;
+    let chatBox = document.getElementById("chat-box");
+    let botResponse = "";
+
+    // Append user's message to chat box
+    chatBox.innerHTML += "User: " + userInput + "<br>";
+
+    // Check for specific keywords and reply accordingly
+    if(userInput.toLowerCase().includes("quantum")) {
+      botResponse = "Ah, you're interested in quantum mechanics! How can I assist you further?";
+    } else if(userInput.toLowerCase().includes("hello")) {
+      botResponse = "Hi there! How can I help you today?";
+    } else {
+      botResponse = "I don't understand.";
+    }
+
+    // Append bot's message to chat box
+    chatBox.innerHTML += "Bot: " + botResponse + "<br>";
+
+    // Clear user input
+    document.getElementById("user-input").value = "";
+  }
+</script>
+
+</body>
+</html>
