@@ -26,20 +26,22 @@
     }
 
     function rollQuantumDie(times) {
-      let result = "Rolling the quantum die " + times + " times:<br>";
+      let result = [];
+      result.push("Rolling the quantum die " + times + " times:<br>");
       for (let i = 0; i < times; i++) {
         const roll = Math.floor(Math.random() * 6) + 1;
-        result += dieToAscii(roll) + "<br><br>";
+        result.push(dieToAscii(roll));
+        result.push("<br><br>");
       }
-      return result;
+      return result.join("");
     }
 
     function queryVirtualQuantumField(input) {
       let response = "";
       if (input.includes("how are you")) {
         response = "I'm just a bunch of qutrits, but thanks for asking!";
-      } else if (input.includes("roll the die")) {
-        response = rollQuantumDie(5);  // Limited to 5 for display reasons
+      } else if (input.includes("roll the quantum die")) {
+        response = rollQuantumDie(4000);
       } else if (input.includes("tell me a joke")) {
         response = "Why did the quantum state cross the road? To be in three places at once!";
       } else if (input.includes("quantum")) {
