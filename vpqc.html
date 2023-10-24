@@ -61,16 +61,14 @@
     }
 
     function queryVirtualQuantumField(input) {
-      let response = "";
-      const {result, ascii} = rollQuantumDie(4000);
-      response = result + "\nASCII Art:\n" + ascii;
+      const {result, ascii} = rollQuantumDie(10);
+      const response = result + "<br>ASCII Art:<br>" + ascii.replace(/\n/g, '<br>');
       document.getElementById('output').innerHTML = response;
       copyToClipboard(response);
     }
 
     function getResponse() {
-      const user_input = document.getElementById('user_input').value;
-      queryVirtualQuantumField(user_input);
+      queryVirtualQuantumField();
     }
 
     function copyToClipboard(text) {
