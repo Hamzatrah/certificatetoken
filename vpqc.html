@@ -13,6 +13,15 @@
   <div id="output"></div>
 
   <script>
+    function copyToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+
     function dieToAscii(dieNumber) {
       const dieFaces = {
         1: "[     ]<br>[  o  ]<br>[     ]",
@@ -49,6 +58,7 @@
       } else {
         response = "I don't understand, but I'm striving to learn more.";
       }
+      copyToClipboard(response);
       return response;
     }
 
