@@ -1,52 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Quantum Chatbot</title>
+  <title>Virtual Quantum Chatbot</title>
+  <script>
+    function rollDie4000Times() {
+      const outcomes = ['H', '+', '𝕏'];
+      const results = { 'H': 0, '+': 0, '𝕏': 0 };
+  
+      for (let i = 0; i < 4000; i++) {
+        const roll = outcomes[Math.floor(Math.random() * 3)];
+        results[roll]++;
+      }
+  
+      return `H: ${results['H']}, +: ${results['+']}, 𝕏: ${results['𝕏']}`;
+    }
+
+    function sendMessage() {
+      const inputElement = document.getElementById('userInput');
+      const chatBox = document.getElementById('chatBox');
+      const userInput = inputElement.value;
+
+      if (userInput.toLowerCase() === 'roll the die 4000 times') {
+        const result = rollDie4000Times();
+        chatBox.innerHTML += '<br/>User: ' + userInput;
+        chatBox.innerHTML += '<br/>Bot: ' + result;
+      } else {
+        chatBox.innerHTML += '<br/>User: ' + userInput;
+        chatBox.innerHTML += '<br/>Bot: I don\'t understand.';
+      }
+
+      inputElement.value = '';
+    }
+  </script>
 </head>
 <body>
 
 <h1>Virtual Quantum Chatbot</h1>
 
-<div id="chatBox">
-  <!-- Chat history will appear here -->
-</div>
-
-<input id="userInput" type="text" placeholder="Type your message...">
-<button onclick="getUserInput()">Send</button>
-
-<script>
-  function getResponse(userInput) {
-    // 3 Sided iCoin logic
-    const iCoin = Math.floor(Math.random() * 3) + 1;
-
-    // Quantum Die logic
-    const quantumDie = Math.floor(Math.random() * 6) + 1;
-
-    // Fusion Processor logic (for demonstration, we'll just add the iCoin and quantumDie values)
-    const fusionProcessor = iCoin + quantumDie;
-
-    // Combine all virtual quantum field generators
-    const quantumField = fusionProcessor + iCoin + quantumDie;
-
-    // Return a message based on the quantumField
-    if (quantumField < 7) {
-      return "I don't understand.";
-    } else if (quantumField < 14) {
-      return "Interesting point.";
-    } else {
-      return "You're absolutely right.";
-    }
-  }
-
-  function getUserInput() {
-    const chatBox = document.getElementById("chatBox");
-    const userInput = document.getElementById("userInput").value;
-    chatBox.innerHTML += "You: " + userInput + "<br>";
-
-    const botResponse = getResponse(userInput);
-    chatBox.innerHTML += "Bot: " + botResponse + "<br>";
-  }
-</script>
+<div id="chatBox"></div>
+<br/>
+<input type="text" id="userInput">
+<button onclick="sendMessage()">Send</button>
 
 </body>
 </html>
