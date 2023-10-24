@@ -3,15 +3,30 @@
 <head>
   <title>Virtual Quantum Chatbot with Fusion Processor</title>
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.30/build/Tone.min.js"></script>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 10%;
+    }
+    #container {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>Virtual Quantum Chatbot</h1>
+  <div id="container">
+    <h1>Virtual Quantum Chatbot</h1>
 
-  <input type="text" id="user_input" placeholder="Type your query...">
-  <button onclick="getResponse()">Ask</button>
+    <input type="text" id="user_input" placeholder="Type your query...">
+    <button onclick="getResponse()">Ask</button>
 
-  <div id="output"></div>
+    <div id="output"></div>
+  </div>
 
   <script>
     const synth = new Tone.Synth().toDestination();
