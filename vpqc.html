@@ -2,45 +2,47 @@
 <html>
 <head>
   <title>Virtual Quantum Chatbot</title>
-  <script>
-    function rollDie4000Times() {
-      const outcomes = ['H', '+', '𝕏'];
-      const results = { 'H': 0, '+': 0, '𝕏': 0 };
-  
-      for (let i = 0; i < 4000; i++) {
-        const roll = outcomes[Math.floor(Math.random() * 3)];
-        results[roll]++;
-      }
-  
-      return `H: ${results['H']}, +: ${results['+']}, 𝕏: ${results['𝕏']}`;
-    }
-
-    function sendMessage() {
-      const inputElement = document.getElementById('userInput');
-      const chatBox = document.getElementById('chatBox');
-      const userInput = inputElement.value;
-
-      if (userInput.toLowerCase() === 'roll the die 4000 times') {
-        const result = rollDie4000Times();
-        chatBox.innerHTML += '<br/>User: ' + userInput;
-        chatBox.innerHTML += '<br/>Bot: ' + result;
-      } else {
-        chatBox.innerHTML += '<br/>User: ' + userInput;
-        chatBox.innerHTML += '<br/>Bot: I don\'t understand.';
-      }
-
-      inputElement.value = '';
-    }
-  </script>
 </head>
 <body>
 
-<h1>Virtual Quantum Chatbot</h1>
+  <h1>Virtual Quantum Chatbot</h1>
 
-<div id="chatBox"></div>
-<br/>
-<input type="text" id="userInput">
-<button onclick="sendMessage()">Send</button>
+  <input type="text" id="user_input" placeholder="Type your query...">
+  <button onclick="getResponse()">Ask</button>
+
+  <div id="output"></div>
+
+  <script>
+    function rollQuantumDie(times) {
+      let result = "Rolling the quantum die " + times + " times: ";
+      for (let i = 0; i < times; i++) {
+        result += Math.floor(Math.random() * 6) + 1 + ", ";
+      }
+      return result.slice(0, -2);
+    }
+
+    function queryVirtualQuantumField(input) {
+      let response = "";
+      if (input.includes("how are you")) {
+        response = "I'm just a bunch of qutrits, but thanks for asking!";
+      } else if (input.includes("roll the die")) {
+        response = rollQuantumDie(4000);
+      } else if (input.includes("tell me a joke")) {
+        response = "Why did the quantum state cross the road? To be in three places at once!";
+      } else if (input.includes("quantum")) {
+        response = "Ah, quantum, the realm of possibilities!";
+      } else {
+        response = "I don't understand, but I'm striving to learn more.";
+      }
+      return response;
+    }
+
+    function getResponse() {
+      const user_input = document.getElementById('user_input').value;
+      const output = queryVirtualQuantumField(user_input);
+      document.getElementById('output').innerHTML = output;
+    }
+  </script>
 
 </body>
 </html>
