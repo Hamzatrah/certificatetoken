@@ -1,39 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>Quantum Die Chatbot Demo</title>
 </head>
-    <header>
-    <div class="text">
-    <main class="margins">
-        <header>
-            <h1><div class="justify-title"><span>C</span><span>E</span><span>R</span><span>T</span><span>I</span><span>F</span></span>I</span></span>C</span><span>A</span><span>T</span><span>E</span><span><div class="justify-title">O</span><span>F<div class="justify-title"></span><span>A</span><span>U</span><span>T</span><span>H</span><span>E</span><span>N</span><span>T</span><span>I</span><span>C</span><span>I</span><span>T</span><span>Y<div class="justify-title"></span><span>T</span><span>O</span><span>K</span><span>E</span><span>N</div><div class="justify-title"></div></h1>
-        </header>
-        <body>
-        <section>
-          <button id="accordion">
-                 <h2><span id="carron" class="">&#187;</span><span>&nbsp;</span>Untitled Art Fair 2022</h2>
-            </button>
-            <div class="panel">
-                <ui>
-                    <li><a href="Mommymi.html">Mother</a></li>
-                    <li><a href="Mary.html">Mary</a></li>
-                    <li><a href="Emma.html">Emma</a></li>
-                    <li><a href="Annie.html">Annie</a></li>
-                    <li><a href="Abraham.html">Abraham</a></li>
-                    <li><a href="Jesus.html">Jesus</a></li>
-                    <li><a href="Mohammed.html">Mohammed</a></li>
-                    <li><a href="Michael.html">Michael</a></li>
-                    <li><a href="Jordan.html">Jordan</a></li>
-                    <li><a href="Daddymi.html">Father</a></li>
-                    <li><a href="Napoleon.html">Napoleon</a></li>
-                </ui>
-            </div>
-        </section>
-    </main>
-       <script src="index.js"></script>  
-        </html>
+<body>
+    <h1>Quantum Die Chatbot</h1>
+    <div id="chatBox" style="border: 1px solid black; width: 300px; height: 400px; overflow: auto;">
+    </div>
+    <input id="userInput" type="text" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function rollQuantumDie() {
+            const outcomes = ['H', '+', '𝕏'];
+            const randomIndex = Math.floor(Math.random() * outcomes.length);
+            return outcomes[randomIndex];
+        }
+
+        function botResponse() {
+            const outcome = rollQuantumDie();
+            let response = "";
+
+            if (outcome === 'H') {
+                response = "Quantum Computing is fascinating!";
+            } else if (outcome === '+') {
+                response = "Nanotechnology holds promise for the future.";
+            } else if (outcome === '𝕏') {
+                response = "Fusion could be the energy source of tomorrow.";
+            }
+
+            return response;
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            const chatBox = document.getElementById("chatBox");
+
+            // Append user message
+            chatBox.innerHTML += `<div>User: ${userInput}</div>`;
+
+            // Append bot response
+            chatBox.innerHTML += `<div>Bot: ${botResponse()}</div>`;
+
+            // Clear user input
+            document.getElementById("userInput").value = '';
+        }
+    </script>
 </body>
+</html>
