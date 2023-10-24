@@ -114,3 +114,56 @@
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quantum Chatbot</title>
+</head>
+<body>
+
+<h1>Virtual Quantum Chatbot</h1>
+
+<div id="chatBox">
+  <!-- Chat history will appear here -->
+</div>
+
+<input id="userInput" type="text" placeholder="Type your message...">
+<button onclick="getUserInput()">Send</button>
+
+<script>
+  function getResponse(userInput) {
+    // 3 Sided iCoin logic
+    const iCoin = Math.floor(Math.random() * 3) + 1;
+
+    // Quantum Die logic
+    const quantumDie = Math.floor(Math.random() * 6) + 1;
+
+    // Fusion Processor logic (for demonstration, we'll just add the iCoin and quantumDie values)
+    const fusionProcessor = iCoin + quantumDie;
+
+    // Combine all virtual quantum field generators
+    const quantumField = fusionProcessor + iCoin + quantumDie;
+
+    // Return a message based on the quantumField
+    if (quantumField < 7) {
+      return "I don't understand.";
+    } else if (quantumField < 14) {
+      return "Interesting point.";
+    } else {
+      return "You're absolutely right.";
+    }
+  }
+
+  function getUserInput() {
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput").value;
+    chatBox.innerHTML += "You: " + userInput + "<br>";
+
+    const botResponse = getResponse(userInput);
+    chatBox.innerHTML += "Bot: " + botResponse + "<br>";
+  }
+</script>
+
+</body>
+</html>
