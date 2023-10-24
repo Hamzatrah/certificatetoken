@@ -13,12 +13,25 @@
   <div id="output"></div>
 
   <script>
+    function dieToAscii(dieNumber) {
+      const dieFaces = {
+        1: "[     ]<br>[  o  ]<br>[     ]",
+        2: "[o    ]<br>[     ]<br>[    o]",
+        3: "[o    ]<br>[  o  ]<br>[    o]",
+        4: "[o   o]<br>[     ]<br>[o   o]",
+        5: "[o   o]<br>[  o  ]<br>[o   o]",
+        6: "[o   o]<br>[o   o]<br>[o   o]",
+      };
+      return dieFaces[dieNumber];
+    }
+
     function rollQuantumDie(times) {
-      let result = "Rolling the quantum die " + times + " times: ";
+      let result = "Rolling the quantum die " + times + " times:<br>";
       for (let i = 0; i < times; i++) {
-        result += Math.floor(Math.random() * 6) + 1 + ", ";
+        const roll = Math.floor(Math.random() * 6) + 1;
+        result += dieToAscii(roll) + "<br><br>";
       }
-      return result.slice(0, -2);
+      return result;
     }
 
     function queryVirtualQuantumField(input) {
@@ -26,7 +39,7 @@
       if (input.includes("how are you")) {
         response = "I'm just a bunch of qutrits, but thanks for asking!";
       } else if (input.includes("roll the die")) {
-        response = rollQuantumDie(4000);
+        response = rollQuantumDie(5);  // Limited to 5 for display reasons
       } else if (input.includes("tell me a joke")) {
         response = "Why did the quantum state cross the road? To be in three places at once!";
       } else if (input.includes("quantum")) {
