@@ -34,15 +34,17 @@
   <div id="quantumFieldContainer"></div>
 
   <script>
-    let asciiArt = '';
-    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const scale = [262, 294, 330, 349, 392, 440, 494]; // Expanded to 7 notes for more variety
-
-    function playSound(note) {
+    function playSound(symbol) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const soundMap = {
+        'H': 262,
+        '𝕏': 294,
+        '+': 330
+      };
       const oscillator = audioContext.createOscillator();
-      oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(soundMap[symbol], audioContext.currentTime);
       oscillator.connect(audioContext.destination);
-      oscillator.start(audioContext.currentTime);
+      oscillator.start();
       oscillator.stop(audioContext.currentTime + 0.05);
     }
 
@@ -51,42 +53,25 @@
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function nanoCompiler(symbol, index) {
-      // Use ASCII value and index for more randomness
-      const asciiVal = symbol.charCodeAt(0);
-      const modifiedSymbol = String.fromCharCode((asciiVal + index) % 128);
-
-      // Return a modified symbol and a modified frequency
-      return {
-        symbol: modifiedSymbol,
-        frequency: scale[(asciiVal + index) % 7]
-      };
+    function nanoCompiler(quantumField) {
+      // A revolutionary nanoCompiler can be implemented here
+      return quantumField;
     }
 
     function getResponse() {
+      let asciiArt = '';
       let i = 0;
-
       const interval = setInterval(function() {
         const symbol = rollQuantumDie();
-        const compiled = nanoCompiler(symbol, i);
-        asciiArt += compiled.symbol;
-
+        asciiArt += symbol;
         document.getElementById('quantumFieldContainer').innerText = asciiArt;
-
-        // Play a note based on the modified frequency
-        playSound(compiled.frequency);
-
+        playSound(symbol);  // Play sound as each symbol is added
         i++;
-        if (i >= 4000) {
-          clearInterval(interval);
-          // Copy to clipboard after the ASCII art is fully generated
-          navigator.clipboard.writeText(asciiArt).then(function() {
-            console.log('Copied to clipboard');
-          }).catch(function() {
-            console.log('Failed to copy text to clipboard');
-          });
-        }
+        if (i >= 4000) clearInterval(interval);
       }, 50);
+
+      const compiledField = nanoCompiler(asciiArt);
+      // Do something with compiledField if needed
     }
   </script>
 </body>
