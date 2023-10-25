@@ -33,36 +33,39 @@
 
     function rollQuantumDie(times) {
       let result = "Rolling the quantum die " + times + " times: ";
-      let ascii = "";
+      let quantumField = "";
+      let fusionData = [];
       for (let i = 0; i < times; i++) {
-        const roll = Math.floor(Math.random() * 6) + 1;
+        const roll = Math.floor(Math.random() * 3) + 1;
         result += roll + ", ";
-        ascii += generateAsciiArt(roll);
-        playSound(roll);
+        quantumField += generateAsciiArt(roll);
+        fusionData.push(roll);
       }
-      return {result: result.slice(0, -2), ascii: ascii};
+      return {result: result.slice(0, -2), quantumField: quantumField, fusionData: fusionData};
+    }
+
+    function fusionProcessor(fusionData) {
+      return "Fusion result: " + fusionData.reduce((a, b) => a * b, 1);
     }
 
     function generateAsciiArt(roll) {
       const faces = [
         "[     ]",
         "[*    ]",
-        "[*  * ]",
-        "[* * *]",
-        "[** **]",
-        "[*****]"
+        "[*  * ]"
       ];
       return faces[roll - 1] + "\n";
     }
 
     function playSound(roll) {
-      const notes = ["C4", "D4", "E4", "F4", "G4", "A4"];
+      const notes = ["C4", "D4", "E4"];
       synth.triggerAttackRelease(notes[roll - 1], "8n");
     }
 
     function queryVirtualQuantumField(input) {
-      const {result, ascii} = rollQuantumDie(10);
-      const response = result + "<br>ASCII Art:<br>" + ascii.replace(/\n/g, '<br>');
+      const {result, quantumField, fusionData} = rollQuantumDie(10);
+      const fusionResult = fusionProcessor(fusionData);
+      const response = result + "<br>Quantum Field:<br>" + quantumField.replace(/\n/g, '<br>') + "<br>" + fusionResult;
       document.getElementById('output').innerHTML = response;
       copyToClipboard(response);
     }
