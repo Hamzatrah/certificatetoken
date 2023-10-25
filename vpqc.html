@@ -10,6 +10,10 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    /* Styling the visualization div */
+    #visualization {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -19,6 +23,7 @@
     <input type="text" id="user_input" placeholder="Type your query...">
     <button onclick="getResponse()">Ask</button>
     <div id="output">Quantum Field</div>
+    <div id="visualization">Visualization:</div>
   </div>
 
   <script>
@@ -46,7 +51,7 @@
 
     function rollQuantumDie(times) {
       let result = "";
-      const faces = ['H', '𝕏', '+'];  // Three faces of the quantum die
+      const faces = ['H', '𝕏', '+'];
       for (let i = 0; i < times; i++) {
         result += faces[Math.floor(Math.random() * 3)] + ", ";
       }
@@ -64,14 +69,18 @@
     }
 
     function queryVirtualQuantumField(input) {
-      playSound();  // Play sound whenever a query is made
+      playSound();
 
       const quantumDie = rollQuantumDie(4000);
       const catStatus = schrodingersCat();
       const coinFace = iCoin();
-      const fusedResponse = fusionProcessor(quantumDie);  // Apply Fusion Processor
+      const fusedResponse = fusionProcessor(quantumDie);
 
       const consolidatedField = consolidateQuantumField(fusedResponse, catStatus, coinFace);
+
+      // Update visualization div
+      const vis = document.getElementById('visualization');
+      vis.innerHTML = `Visualization: <br> Quantum Die: ${quantumDie.substring(0, 10)}... <br> Cat: ${catStatus} <br> iCoin: ${coinFace} <br> Fusion Processor: ${fusedResponse.substring(0, 10)}... <br> Quantum Field: ${consolidatedField}`;
 
       // Copy to clipboard
       navigator.clipboard.writeText(consolidatedField).then(function() {
