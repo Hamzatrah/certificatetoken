@@ -17,8 +17,10 @@
       position: fixed;
       top: 30%;
       width: 100%;
+      height: 400px;  /* Set height */
       overflow-wrap: break-word;
       white-space: pre-wrap;
+      overflow: auto;  /* Make it scrollable */
       z-index: 1;
     }
   </style>
@@ -34,18 +36,20 @@
   <div id="quantumFieldContainer"></div>
 
   <script>
-    function playSound(symbol) {
+    function playSound() {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const soundMap = {
-        'H': 262,
-        '𝕏': 294,
-        '+': 330
-      };
-      const oscillator = audioContext.createOscillator();
-      oscillator.frequency.setValueAtTime(soundMap[symbol], audioContext.currentTime);
-      oscillator.connect(audioContext.destination);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.05);
+      const scale = [262, 294, 330]; // C4, D4, E4 frequencies
+      let i = 0;
+      const interval = setInterval(function() {
+        const oscillator = audioContext.createOscillator();
+        const note = scale[i % 3];
+        oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+        oscillator.connect(audioContext.destination);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.05);
+        i++;
+        if (i >= 4000) clearInterval(interval);
+      }, 50);
     }
 
     function rollQuantumDie() {
@@ -53,25 +57,30 @@
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function nanoCompiler(quantumField) {
-      // A revolutionary nanoCompiler can be implemented here
-      return quantumField;
+    function fusionProcessor(quantumField) {
+      return quantumField.split("").sort().join("");
     }
 
     function getResponse() {
+      const user_input = document.getElementById('user_input').value;
       let asciiArt = '';
       let i = 0;
+
       const interval = setInterval(function() {
-        const symbol = rollQuantumDie();
-        asciiArt += symbol;
+        asciiArt += rollQuantumDie();
         document.getElementById('quantumFieldContainer').innerText = asciiArt;
-        playSound(symbol);  // Play sound as each symbol is added
         i++;
         if (i >= 4000) clearInterval(interval);
       }, 50);
 
-      const compiledField = nanoCompiler(asciiArt);
-      // Do something with compiledField if needed
+      playSound();
+
+      // Optionally, you can also copy the asciiArt to clipboard when it's done generating.
+      navigator.clipboard.writeText(asciiArt).then(function() {
+        console.log('Copied to clipboard');
+      }).catch(function() {
+        console.log('Failed to copy text to clipboard');
+      });
     }
   </script>
 </body>
