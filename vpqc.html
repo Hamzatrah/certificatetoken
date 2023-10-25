@@ -10,7 +10,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
+    /* Style to accommodate long strings */
     #output {
       word-wrap: break-word;
       width: 80vw;
@@ -29,8 +29,18 @@
   </div>
 
   <script>
-    function playSound(quantumField) {
-      // Placeholder for sound functionality
+    async function playSound(quantumField) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = quantumField.split("").map(char => char.charCodeAt(0) * 2);
+      
+      for (let i = 0; i < notes.length; i++) { // Play the entire quantum field
+        const oscillator = audioContext.createOscillator();
+        oscillator.frequency.setValueAtTime(notes[i], audioContext.currentTime);
+        oscillator.connect(audioContext.destination);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.05);
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
     }
 
     function rollQuantumDie() {
