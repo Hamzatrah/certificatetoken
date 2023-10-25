@@ -10,10 +10,6 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    /* Styling the visualization div */
-    #visualization {
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
@@ -23,7 +19,6 @@
     <input type="text" id="user_input" placeholder="Type your query...">
     <button onclick="getResponse()">Ask</button>
     <div id="output">Quantum Field</div>
-    <div id="visualization">Visualization:</div>
   </div>
 
   <script>
@@ -40,61 +35,46 @@
 
     // Schrödinger's Cat emulator
     function schrodingersCat() {
-      return Math.random() < 0.5 ? 'Alive' : 'Dead';
+      return Math.random() < 0.5 ? 'A' : 'D';
     }
 
-    // 3-sided iCoin
-    function iCoin() {
-      const faces = ['Head', 'Tail', 'Edge'];
+    function rollQuantumDie() {
+      const faces = ['H', '𝕏', '+'];
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function rollQuantumDie(times) {
-      let result = "";
-      const faces = ['H', '𝕏', '+'];
-      for (let i = 0; i < times; i++) {
-        result += faces[Math.floor(Math.random() * 3)] + ", ";
-      }
-      return result.slice(0, -2);
-    }
-
     // Fusion Processor
-    function fusionProcessor(input) {
-      return input.split(", ").sort().join(", ");
+    function fusionProcessor(die, cat) {
+      return `${die}${cat}`;
     }
 
-    // Consolidate into a single Quantum Field
-    function consolidateQuantumField(die, cat, coin) {
-      return `Nano: ${die.substring(0, 3)}-${cat.charAt(0)}-${coin.charAt(0)}`;
+    // Generate ASCII art
+    function generateASCII(fusedInput) {
+      return `[${fusedInput}]`;
     }
 
-    function queryVirtualQuantumField(input) {
+    function queryVirtualQuantumField() {
       playSound();
 
-      const quantumDie = rollQuantumDie(4000);
+      const quantumDie = rollQuantumDie();
       const catStatus = schrodingersCat();
-      const coinFace = iCoin();
-      const fusedResponse = fusionProcessor(quantumDie);
+      const fusedResponse = fusionProcessor(quantumDie, catStatus);
 
-      const consolidatedField = consolidateQuantumField(fusedResponse, catStatus, coinFace);
-
-      // Update visualization div
-      const vis = document.getElementById('visualization');
-      vis.innerHTML = `Visualization: <br> Quantum Die: ${quantumDie.substring(0, 10)}... <br> Cat: ${catStatus} <br> iCoin: ${coinFace} <br> Fusion Processor: ${fusedResponse.substring(0, 10)}... <br> Quantum Field: ${consolidatedField}`;
+      const asciiArt = generateASCII(fusedResponse);
 
       // Copy to clipboard
-      navigator.clipboard.writeText(consolidatedField).then(function() {
+      navigator.clipboard.writeText(asciiArt).then(function() {
         console.log('Copied to clipboard');
       }).catch(function() {
         console.log('Failed to copy text to clipboard');
       });
 
-      return consolidatedField;
+      return asciiArt;
     }
 
     function getResponse() {
-      const user_input = document.getElementById('user_input').value;
-      const output = queryVirtualQuantumField(user_input);
+      document.getElementById('user_input').value;  // We're not using this for now
+      const output = queryVirtualQuantumField();
       document.getElementById('output').innerHTML = 'Quantum Field: ' + output;
     }
   </script>
