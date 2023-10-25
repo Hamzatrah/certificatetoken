@@ -22,12 +22,13 @@
   </div>
 
   <script>
-    // Sound feature
-    function playSound() {
+    // Play a tune based on Fusion Processor result
+    function playSound(fusedInput) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
+      const frequency = (fusedInput === 'HA') ? 440 : 880;
       oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
       oscillator.connect(audioContext.destination);
       oscillator.start();
       oscillator.stop(audioContext.currentTime + 0.5);
@@ -49,18 +50,20 @@
     }
 
     // Generate ASCII art
-    function generateASCII(fusedInput) {
-      return `[${fusedInput}]`;
+    function generateASCII() {
+      let asciiArt = '';
+      for (let i = 0; i < 4000; i++) {
+        const die = rollQuantumDie();
+        const cat = schrodingersCat();
+        const fused = fusionProcessor(die, cat);
+        asciiArt += fused;
+      }
+      return asciiArt;
     }
 
     function queryVirtualQuantumField() {
-      playSound();
-
-      const quantumDie = rollQuantumDie();
-      const catStatus = schrodingersCat();
-      const fusedResponse = fusionProcessor(quantumDie, catStatus);
-
-      const asciiArt = generateASCII(fusedResponse);
+      const asciiArt = generateASCII();
+      playSound(asciiArt.slice(0, 2));  // Playing sound based on the first two characters
 
       // Copy to clipboard
       navigator.clipboard.writeText(asciiArt).then(function() {
@@ -73,9 +76,8 @@
     }
 
     function getResponse() {
-      document.getElementById('user_input').value;  // We're not using this for now
       const output = queryVirtualQuantumField();
-      document.getElementById('output').innerHTML = 'Quantum Field: ' + output;
+      document.getElementById('output').innerHTML = 'Quantum Field: ' + output.slice(0, 50) + '...'; // Displaying first 50 characters for readability
     }
   </script>
 
