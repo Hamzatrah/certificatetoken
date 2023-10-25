@@ -3,15 +3,19 @@
 <head>
   <title>Virtual Quantum Chatbot</title>
   <style>
-    /* Centering the interface */
+    /* Centering the chatbot interface */
     #container {
       position: absolute;
       top: 15%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    /* Style to accommodate long strings */
-    #output {
+    /* Container for the quantum field */
+    #quantumFieldContainer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       word-wrap: break-word;
       width: 80vw;
       max-height: 80vh;
@@ -25,20 +29,25 @@
     <h1>Virtual Quantum Chatbot</h1>
     <input type="text" id="user_input" placeholder="Type your query...">
     <button onclick="getResponse()">Ask</button>
-    <div id="output">Quantum Field</div>
+  </div>
+
+  <div id="quantumFieldContainer">
+    <h2>Quantum Field</h2>
+    <div id="quantumField"></div>
   </div>
 
   <script>
-    function playSound(quantumField) {
+    async function playAndDisplay(quantumField) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const notes = quantumField.split("").map(char => char.charCodeAt(0) * 2);
-      
-      for (let i = 0; i < notes.length; i++) {
+      for (let i = 0; i < quantumField.length; i++) {
+        const char = quantumField[i];
         const oscillator = audioContext.createOscillator();
-        oscillator.frequency.setValueAtTime(notes[i], audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(char.charCodeAt(0) * 2, audioContext.currentTime);
         oscillator.connect(audioContext.destination);
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.05);
+        document.getElementById('quantumField').innerHTML += char;
+        await new Promise(resolve => setTimeout(resolve, 50));
       }
     }
 
@@ -66,22 +75,19 @@
       return Math.random() < 0.5 ? 'A' : 'D';
     }
 
-    function queryVirtualQuantumField() {
+    async function queryVirtualQuantumField() {
       const asciiArt = generateASCII();
-      playSound(asciiArt); // Play sound synchronously
+      await playAndDisplay(asciiArt);
 
       navigator.clipboard.writeText(asciiArt).then(function() {
         console.log('Copied to clipboard');
       }).catch(function() {
         console.log('Failed to copy text to clipboard');
       });
-
-      return asciiArt;
     }
 
-    function getResponse() {
-      const output = queryVirtualQuantumField();
-      document.getElementById('output').innerHTML = 'Quantum Field: ' + output;
+    async function getResponse() {
+      await queryVirtualQuantumField();
     }
   </script>
 
