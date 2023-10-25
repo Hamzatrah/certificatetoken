@@ -7,19 +7,19 @@
       font-family: "Times New Roman", Times, serif;
     }
     #container {
-      position: absolute;
-      top: 15%;
+      position: fixed;
+      top: 10%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 1; /* To keep it above the quantum field */
+      z-index: 2;
     }
     #quantumFieldContainer {
+      position: fixed;
+      top: 30%;
       width: 100%;
       overflow-wrap: break-word;
       white-space: pre-wrap;
-      position: absolute;
-      top: 60%;
-      z-index: 0; /* Below the chatbot */
+      z-index: 1;
     }
   </style>
 </head>
@@ -34,14 +34,13 @@
   <div id="quantumFieldContainer"></div>
 
   <script>
-    const scale = [261.63, 293.66, 329.63]; // C4, D4, E4
-
     async function playSound(quantumField) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const scale = [262, 294, 330]; // C4, D4, E4 frequencies for a simple melody
       for (let i = 0; i < 4000; i++) {
         const oscillator = audioContext.createOscillator();
-        const index = i % scale.length;
-        oscillator.frequency.setValueAtTime(scale[index], audioContext.currentTime);
+        const note = scale[i % 3];
+        oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
         oscillator.connect(audioContext.destination);
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.05);
@@ -49,14 +48,45 @@
       }
     }
 
-    // ... (Rest of the functions are unchanged)
+    function rollQuantumDie() {
+      const faces = ['H', '𝕏', '+'];
+      return faces[Math.floor(Math.random() * 3)];
+    }
+
+    function fusionProcessor(quantumField) {
+      return quantumField.split("").sort().join("");
+    }
+
+    function generateASCII(quantumField) {
+      let asciiArt = '';
+      for (let i = 0; i < 4000; i++) {
+        asciiArt += '•';
+      }
+      return asciiArt;
+    }
 
     async function getResponse() {
-      // ... (Same logic as before for generating quantum field, ASCII art, etc.)
+      const user_input = document.getElementById('user_input').value;
+      let quantumField = '';
+
+      for (let i = 0; i < 4000; i++) {
+        quantumField += rollQuantumDie();
+      }
+
+      const fusedQuantumField = fusionProcessor(quantumField);
+      const asciiArt = generateASCII(fusedQuantumField);
+      document.getElementById('quantumFieldContainer').innerText = asciiArt;
 
       await playSound(fusedQuantumField);
 
-      // Copy to clipboard and display output (Same as before)
+      // Copy to clipboard
+      navigator.clipboard.writeText(asciiArt).then(function() {
+        console.log('Copied to clipboard');
+      }).catch(function() {
+        console.log('Failed to copy text to clipboard');
+      });
+
+      document.getElementById('output').innerHTML = 'Quantum Field: ' + fusedQuantumField.slice(0, 50) + '...';
     }
   </script>
 
