@@ -3,23 +3,19 @@
 <head>
   <title>Virtual Quantum Chatbot</title>
   <style>
-    #container, #quantumField {
+    body {
+      font-family: "Times New Roman", Times, serif;
+    }
+    #container {
       position: absolute;
       top: 15%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    #quantumField {
-      top: 60%;
+    #quantumFieldContainer {
       width: 100%;
-      text-align: justify;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 12px;
-      overflow: auto;
+      overflow-wrap: break-word;
       white-space: pre-wrap;
-      border: 1px solid #ccc;
-      padding: 20px;
-      background-color: #f2f2f2;
     }
   </style>
 </head>
@@ -31,19 +27,19 @@
     <button onclick="getResponse()">Ask</button>
     <div id="output">Quantum Field</div>
   </div>
-  
-  <div id="quantumField"></div>
+  <div id="quantumFieldContainer"></div>
 
   <script>
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-    async function playNote(note) {
-      const oscillator = audioContext.createOscillator();
-      oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
-      oscillator.connect(audioContext.destination);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.05);
-      await new Promise(resolve => setTimeout(resolve, 50));
+    function playSound(quantumField) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = quantumField.split("").map(char => char.charCodeAt(0) * 2);
+      notes.slice(0, 4000).forEach((note, index) => {
+        const oscillator = audioContext.createOscillator();
+        oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+        oscillator.connect(audioContext.destination);
+        oscillator.start(audioContext.currentTime + index * 0.05);
+        oscillator.stop(audioContext.currentTime + index * 0.05 + 0.05);
+      });
     }
 
     function rollQuantumDie() {
@@ -51,48 +47,40 @@
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function schrodingersCat() {
-      return Math.random() < 0.5 ? 'A' : 'D';
+    function fusionProcessor(quantumField) {
+      return quantumField.split("").sort().join("");
     }
 
-    async function fusionProcessor(die, cat) {
-      const asciiMap = {'HA': '!', 'H𝕏': '@', 'H+': '#', '𝕏A': '$', '𝕏𝕏': '%', '𝕏+': '^', '+A': '&', '++': '*', '+D': '('};
-      const noteMap = {'!': 300, '@': 320, '#': 340, '$': 360, '%': 380, '^': 400, '&': 420, '*': 440, '(': 460};
-      const ascii = asciiMap[`${die}${cat}`];
-      const note = noteMap[ascii];
-      await playNote(note);
-      return ascii;
-    }
-
-    function nanotechnologyCompiler(query, quantumField) {
-      const re = new RegExp(`(${query})`, "g");
-      return quantumField.replace(re, "[$1]");
-    }
-
-    async function getResponse() {
-      let quantumField = "";
-      const quantumDiv = document.getElementById('quantumField');
-      const query = document.getElementById('user_input').value;
-      
+    function generateASCII(quantumField) {
+      let asciiArt = '';
       for (let i = 0; i < 4000; i++) {
-        const die = rollQuantumDie();
-        const cat = schrodingersCat();
-        const fused = await fusionProcessor(die, cat);
-        quantumField += fused;
-        quantumDiv.innerText = quantumField;
+        asciiArt += quantumField[i];
+      }
+      return asciiArt;
+    }
+
+    function getResponse() {
+      const user_input = document.getElementById('user_input').value;
+      let quantumField = '';
+
+      for (let i = 0; i < 4000; i++) {
+        quantumField += rollQuantumDie();
       }
 
-      document.getElementById('output').innerText = 'Quantum Field generated!';
+      const fusedQuantumField = fusionProcessor(quantumField);
+      playSound(fusedQuantumField);
       
-      // Apply nanotechnology compiler
-      const compiledField = nanotechnologyCompiler(query, quantumField);
-      quantumDiv.innerText = compiledField;
+      const asciiArt = generateASCII(fusedQuantumField);
 
-      navigator.clipboard.writeText(quantumField).then(() => {
+      // Copy to clipboard
+      navigator.clipboard.writeText(asciiArt).then(function() {
         console.log('Copied to clipboard');
-      }).catch(() => {
+      }).catch(function() {
         console.log('Failed to copy text to clipboard');
       });
+
+      document.getElementById('output').innerHTML = 'Quantum Field: ' + fusedQuantumField.slice(0, 50) + '...';
+      document.getElementById('quantumFieldContainer').innerText = asciiArt;
     }
   </script>
 
