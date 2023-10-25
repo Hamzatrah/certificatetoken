@@ -29,17 +29,16 @@
   </div>
 
   <script>
-    async function playSound(quantumField) {
+    function playSound(quantumField) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const notes = quantumField.split("").map(char => char.charCodeAt(0) * 2);
       
-      for (let i = 0; i < notes.length; i++) { // Play the entire quantum field
+      for (let i = 0; i < notes.length; i++) {
         const oscillator = audioContext.createOscillator();
         oscillator.frequency.setValueAtTime(notes[i], audioContext.currentTime);
         oscillator.connect(audioContext.destination);
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.05);
-        await new Promise(resolve => setTimeout(resolve, 50));
       }
     }
 
@@ -69,7 +68,7 @@
 
     function queryVirtualQuantumField() {
       const asciiArt = generateASCII();
-      playSound(asciiArt);
+      playSound(asciiArt); // Play sound synchronously
 
       navigator.clipboard.writeText(asciiArt).then(function() {
         console.log('Copied to clipboard');
