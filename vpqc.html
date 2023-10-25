@@ -19,7 +19,7 @@
       width: 100%;
       overflow-wrap: break-word;
       white-space: pre-wrap;
-      overflow-y: scroll; /* Makes it scrollable */
+      overflow-y: scroll; /* Scrollable */
       max-height: 400px;
       z-index: 1;
     }
@@ -42,14 +42,11 @@
 
     function playSound(note) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const harmonics = [1.5, 2, 2.5]; // Harmonic ratios
-      harmonics.forEach(harmonic => {
-        const oscillator = audioContext.createOscillator();
-        oscillator.frequency.setValueAtTime(note * harmonic, audioContext.currentTime);
-        oscillator.connect(audioContext.destination);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
-      });
+      const oscillator = audioContext.createOscillator();
+      oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+      oscillator.connect(audioContext.destination);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.05);
     }
 
     function rollQuantumDie() {
@@ -57,8 +54,8 @@
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function fusionProcessor(quantumField) {
-      return quantumField.split("").sort().join("");
+    function fusionProcessor(face) {
+      return face.split("").sort().join("");
     }
 
     function nanoCompiler(face) {
@@ -69,23 +66,20 @@
     function getResponse() {
       let asciiArt = '';
       let i = 0;
+
       const interval = setInterval(function() {
         const face = rollQuantumDie();
         asciiArt += face;
 
-        // Check Schrödinger's Cat
         if (isCatAlive()) {
-          // Use Fusion Processor
           asciiArt = fusionProcessor(asciiArt);
         } else {
-          // Use Nano Compiler to determine frequency
           const note = nanoCompiler(face);
-          // Play the sound using that frequency
           playSound(note);
         }
 
         document.getElementById('quantumFieldContainer').innerText = asciiArt;
-
+        
         i++;
         if (i >= 4000) clearInterval(interval);
       }, 50);
