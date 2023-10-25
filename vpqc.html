@@ -58,26 +58,29 @@
       return input.split(", ").sort().join(", ");
     }
 
+    // Consolidate into a single Quantum Field
+    function consolidateQuantumField(die, cat, coin) {
+      return `Nano: ${die.substring(0, 3)}-${cat.charAt(0)}-${coin.charAt(0)}`;
+    }
+
     function queryVirtualQuantumField(input) {
-      let response = "";
       playSound();  // Play sound whenever a query is made
 
-      // Incorporate all quantum emulators
       const quantumDie = rollQuantumDie(4000);
       const catStatus = schrodingersCat();
       const coinFace = iCoin();
+      const fusedResponse = fusionProcessor(quantumDie);  // Apply Fusion Processor
 
-      response = `Quantum Die: ${quantumDie}, Schrödinger's Cat: ${catStatus}, iCoin: ${coinFace}`;
-      response = fusionProcessor(response);  // Apply Fusion Processor
+      const consolidatedField = consolidateQuantumField(fusedResponse, catStatus, coinFace);
 
       // Copy to clipboard
-      navigator.clipboard.writeText(response).then(function() {
+      navigator.clipboard.writeText(consolidatedField).then(function() {
         console.log('Copied to clipboard');
       }).catch(function() {
         console.log('Failed to copy text to clipboard');
       });
 
-      return response;
+      return consolidatedField;
     }
 
     function getResponse() {
