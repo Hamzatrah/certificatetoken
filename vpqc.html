@@ -3,20 +3,14 @@
 <head>
   <title>Virtual Quantum Chatbot</title>
   <style>
-    /* Centering the interface */
-    #container {
+    #container, #quantumField {
       position: absolute;
       top: 15%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
-    /* Quantum field container */
     #quantumField {
-      position: absolute;
       top: 60%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       width: 100%;
       text-align: justify;
       font-family: 'Courier New', Courier, monospace;
@@ -37,7 +31,7 @@
     <button onclick="getResponse()">Ask</button>
     <div id="output">Quantum Field</div>
   </div>
-
+  
   <div id="quantumField"></div>
 
   <script>
@@ -62,39 +56,23 @@
     }
 
     async function fusionProcessor(die, cat) {
-      const asciiMap = {
-        'HA': '!',
-        'H𝕏': '@',
-        'H+': '#',
-        '𝕏A': '$',
-        '𝕏𝕏': '%',
-        '𝕏+': '^',
-        '+A': '&',
-        '++': '*',
-        '+D': '('
-      };
-
-      const noteMap = {
-        '!': 300,
-        '@': 320,
-        '#': 340,
-        '$': 360,
-        '%': 380,
-        '^': 400,
-        '&': 420,
-        '*': 440,
-        '(': 460
-      };
-
+      const asciiMap = {'HA': '!', 'H𝕏': '@', 'H+': '#', '𝕏A': '$', '𝕏𝕏': '%', '𝕏+': '^', '+A': '&', '++': '*', '+D': '('};
+      const noteMap = {'!': 300, '@': 320, '#': 340, '$': 360, '%': 380, '^': 400, '&': 420, '*': 440, '(': 460};
       const ascii = asciiMap[`${die}${cat}`];
       const note = noteMap[ascii];
       await playNote(note);
       return ascii;
     }
 
+    function nanotechnologyCompiler(query, quantumField) {
+      const re = new RegExp(`(${query})`, "g");
+      return quantumField.replace(re, "[$1]");
+    }
+
     async function getResponse() {
       let quantumField = "";
       const quantumDiv = document.getElementById('quantumField');
+      const query = document.getElementById('user_input').value;
       
       for (let i = 0; i < 4000; i++) {
         const die = rollQuantumDie();
@@ -105,6 +83,10 @@
       }
 
       document.getElementById('output').innerText = 'Quantum Field generated!';
+      
+      // Apply nanotechnology compiler
+      const compiledField = nanotechnologyCompiler(query, quantumField);
+      quantumDiv.innerText = compiledField;
 
       navigator.clipboard.writeText(quantumField).then(() => {
         console.log('Copied to clipboard');
