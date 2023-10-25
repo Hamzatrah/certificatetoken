@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Virtual Quantum Chatbot with Fusion Processor</title>
-  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.30/build/Tone.min.js"></script>
+  <title>Virtual Quantum Chatbot</title>
   <style>
-    body, html {
-      height: 100%;
-      margin: 0;
+    body {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 10%;
-    }
-    #container {
-      text-align: center;
+      height: 100vh;
+      margin: 0;
     }
   </style>
 </head>
 <body>
 
-  <div id="container">
+  <div>
     <h1>Virtual Quantum Chatbot</h1>
 
     <input type="text" id="user_input" placeholder="Type your query...">
@@ -29,58 +24,31 @@
   </div>
 
   <script>
-    const synth = new Tone.Synth().toDestination();
-
     function rollQuantumDie(times) {
-      let result = "Rolling the quantum die " + times + " times: ";
-      let quantumField = "";
-      let fusionData = [];
+      let result = "Quantum Field: ";
+      let faces = ['H', '𝕏', '+'];
       for (let i = 0; i < times; i++) {
-        const roll = Math.floor(Math.random() * 3) + 1;
-        result += roll + ", ";
-        quantumField += generateAsciiArt(roll);
-        fusionData.push(roll);
+        result += faces[Math.floor(Math.random() * 3)] + ", ";
       }
-      return {result: result.slice(0, -2), quantumField: quantumField, fusionData: fusionData};
+      return result.slice(0, -2);
     }
 
-    function fusionProcessor(fusionData) {
-      return "Fusion result: " + fusionData.reduce((a, b) => a * b, 1);
-    }
-
-    function generateAsciiArt(roll) {
-      const faces = [
-        "[     ]",
-        "[*    ]",
-        "[*  * ]"
-      ];
-      return faces[roll - 1] + "\n";
-    }
-
-    function playSound(roll) {
-      const notes = ["C4", "D4", "E4"];
-      synth.triggerAttackRelease(notes[roll - 1], "8n");
+    function fusionProcessor(input) {
+      return "Fusion processor activated: " + input;
     }
 
     function queryVirtualQuantumField(input) {
-      const {result, quantumField, fusionData} = rollQuantumDie(10);
-      const fusionResult = fusionProcessor(fusionData);
-      const response = result + "<br>Quantum Field:<br>" + quantumField.replace(/\n/g, '<br>') + "<br>" + fusionResult;
-      document.getElementById('output').innerHTML = response;
-      copyToClipboard(response);
+      let response = rollQuantumDie(4000);
+      return fusionProcessor(response);
     }
 
     function getResponse() {
-      queryVirtualQuantumField();
-    }
+      const user_input = document.getElementById('user_input').value;
+      const output = queryVirtualQuantumField(user_input);
+      document.getElementById('output').innerHTML = output;
 
-    function copyToClipboard(text) {
-      var textArea = document.createElement("textarea");
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
+      // Copy to clipboard
+      navigator.clipboard.writeText(output);
     }
   </script>
 
