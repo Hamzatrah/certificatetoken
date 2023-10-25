@@ -60,7 +60,7 @@
     function generateASCII(quantumField) {
       let asciiArt = '';
       for (let i = 0; i < 4000; i++) {
-        asciiArt += '•';
+        asciiArt += rollQuantumDie(); // Using quantum faces to generate the ASCII art
       }
       return asciiArt;
     }
