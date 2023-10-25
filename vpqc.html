@@ -3,55 +3,87 @@
 <head>
   <title>Virtual Quantum Chatbot</title>
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
-      margin: 0;
+    /* Centering the interface */
+    #container {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   </style>
 </head>
 <body>
 
-  <div>
+  <div id="container">
     <h1>Virtual Quantum Chatbot</h1>
     <input type="text" id="user_input" placeholder="Type your query...">
     <button onclick="getResponse()">Ask</button>
-    <div id="output"></div>
+    <div id="output">Quantum Field</div>
   </div>
 
   <script>
-    // Fusion Processor concept
-    function fusionProcessor(input) {
-      return input.split('').sort().join('');
+    // Sound feature
+    function playSound() {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+      oscillator.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.5);
+    }
+
+    // Schrödinger's Cat emulator
+    function schrodingersCat() {
+      return Math.random() < 0.5 ? 'Alive' : 'Dead';
+    }
+
+    // 3-sided iCoin
+    function iCoin() {
+      const faces = ['Head', 'Tail', 'Edge'];
+      return faces[Math.floor(Math.random() * 3)];
     }
 
     function rollQuantumDie(times) {
-      const faces = ['H', '𝕏', '+'];
-      let result = "Quantum Field: ";
+      let result = "";
+      const faces = ['H', '𝕏', '+'];  // Three faces of the quantum die
       for (let i = 0; i < times; i++) {
-        const face = faces[Math.floor(Math.random() * 3)];
-        result += face;
+        result += faces[Math.floor(Math.random() * 3)] + ", ";
       }
-      // Apply Fusion Processor
-      result = fusionProcessor(result);
-      return result;
+      return result.slice(0, -2);
+    }
+
+    // Fusion Processor
+    function fusionProcessor(input) {
+      return input.split(", ").sort().join(", ");
     }
 
     function queryVirtualQuantumField(input) {
-      let output = rollQuantumDie(4000);
-      return output;
+      let response = "";
+      playSound();  // Play sound whenever a query is made
+
+      // Incorporate all quantum emulators
+      const quantumDie = rollQuantumDie(4000);
+      const catStatus = schrodingersCat();
+      const coinFace = iCoin();
+
+      response = `Quantum Die: ${quantumDie}, Schrödinger's Cat: ${catStatus}, iCoin: ${coinFace}`;
+      response = fusionProcessor(response);  // Apply Fusion Processor
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(response).then(function() {
+        console.log('Copied to clipboard');
+      }).catch(function() {
+        console.log('Failed to copy text to clipboard');
+      });
+
+      return response;
     }
 
     function getResponse() {
       const user_input = document.getElementById('user_input').value;
       const output = queryVirtualQuantumField(user_input);
-      document.getElementById('output').innerHTML = output;
-
-      // Copy only the Quantum Field to clipboard
-      const fieldOutput = output.substring("Quantum Field: ".length);
-      navigator.clipboard.writeText(fieldOutput);
+      document.getElementById('output').innerHTML = 'Quantum Field: ' + output;
     }
   </script>
 
