@@ -14,10 +14,18 @@
     /* Quantum field container */
     #quantumField {
       position: absolute;
-      top: 50%;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 100%;
-      height: auto;
+      text-align: justify;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
       overflow: auto;
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: #f2f2f2;
     }
   </style>
 </head>
@@ -53,7 +61,7 @@
       return Math.random() < 0.5 ? 'A' : 'D';
     }
 
-    function fusionProcessor(die, cat) {
+    async function fusionProcessor(die, cat) {
       const asciiMap = {
         'HA': '!',
         'H𝕏': '@',
@@ -80,27 +88,23 @@
 
       const ascii = asciiMap[`${die}${cat}`];
       const note = noteMap[ascii];
-
-      playNote(note);
+      await playNote(note);
       return ascii;
     }
 
     async function getResponse() {
       let quantumField = "";
+      const quantumDiv = document.getElementById('quantumField');
+      
       for (let i = 0; i < 4000; i++) {
         const die = rollQuantumDie();
         const cat = schrodingersCat();
-        const fused = fusionProcessor(die, cat);
+        const fused = await fusionProcessor(die, cat);
         quantumField += fused;
-
-        if (i % 100 === 0) {
-          document.getElementById('quantumField').innerText = quantumField;
-          await new Promise(resolve => setTimeout(resolve, 5));
-        }
+        quantumDiv.innerText = quantumField;
       }
 
       document.getElementById('output').innerText = 'Quantum Field generated!';
-      document.getElementById('quantumField').innerText = quantumField;
 
       navigator.clipboard.writeText(quantumField).then(() => {
         console.log('Copied to clipboard');
