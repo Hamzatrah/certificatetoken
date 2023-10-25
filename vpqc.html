@@ -22,21 +22,19 @@
   </div>
 
   <script>
-    // Play a tune based on Fusion Processor result
-    function playSound(fusedInput) {
+    // Play a jingle based on the quantum field
+    async function playSound(quantumField) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const frequency = (fusedInput === 'HA') ? 440 : 880;
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-      oscillator.connect(audioContext.destination);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.5);
-    }
+      const notes = quantumField.slice(0, 4).split("").map(char => char.charCodeAt(0) * 2); // Convert the first 4 characters to frequencies
 
-    // Schrödinger's Cat emulator
-    function schrodingersCat() {
-      return Math.random() < 0.5 ? 'A' : 'D';
+      for (let i = 0; i < notes.length; i++) {
+        const oscillator = audioContext.createOscillator();
+        oscillator.frequency.setValueAtTime(notes[i], audioContext.currentTime);
+        oscillator.connect(audioContext.destination);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+        await new Promise(resolve => setTimeout(resolve, 500)); // Pause for 0.5s between notes
+      }
     }
 
     function rollQuantumDie() {
@@ -61,9 +59,14 @@
       return asciiArt;
     }
 
+    // Schrödinger's Cat emulator
+    function schrodingersCat() {
+      return Math.random() < 0.5 ? 'A' : 'D';
+    }
+
     function queryVirtualQuantumField() {
       const asciiArt = generateASCII();
-      playSound(asciiArt.slice(0, 2));  // Playing sound based on the first two characters
+      playSound(asciiArt);  // Play the jingle based on the quantum field
 
       // Copy to clipboard
       navigator.clipboard.writeText(asciiArt).then(function() {
@@ -77,7 +80,7 @@
 
     function getResponse() {
       const output = queryVirtualQuantumField();
-      document.getElementById('output').innerHTML = 'Quantum Field: ' + output.slice(0, 50) + '...'; // Displaying first 50 characters for readability
+      document.getElementById('output').innerHTML = 'Quantum Field: ' + output.slice(0, 50) + '...'; // Displaying first 50 characters
     }
   </script>
 
