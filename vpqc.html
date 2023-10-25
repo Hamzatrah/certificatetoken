@@ -17,10 +17,10 @@
       position: fixed;
       top: 30%;
       width: 100%;
-      height: 400px;  /* Set height */
       overflow-wrap: break-word;
       white-space: pre-wrap;
-      overflow: auto;  /* Make it scrollable */
+      overflow-y: scroll; /* Makes it scrollable */
+      max-height: 400px;
       z-index: 1;
     }
   </style>
@@ -36,20 +36,16 @@
   <div id="quantumFieldContainer"></div>
 
   <script>
-    function playSound() {
+    function playSound(note) {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const scale = [262, 294, 330]; // C4, D4, E4 frequencies
-      let i = 0;
-      const interval = setInterval(function() {
+      const harmonics = [1.5, 2, 2.5]; // Harmonic ratios
+      harmonics.forEach(harmonic => {
         const oscillator = audioContext.createOscillator();
-        const note = scale[i % 3];
-        oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(note * harmonic, audioContext.currentTime);
         oscillator.connect(audioContext.destination);
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.05);
-        i++;
-        if (i >= 4000) clearInterval(interval);
-      }, 50);
+      });
     }
 
     function rollQuantumDie() {
@@ -61,26 +57,28 @@
       return quantumField.split("").sort().join("");
     }
 
+    function nanoCompiler(face) {
+      const scale = { 'H': 262, '𝕏': 294, '+': 330 }; // C4, D4, E4 frequencies
+      return scale[face];
+    }
+
     function getResponse() {
-      const user_input = document.getElementById('user_input').value;
       let asciiArt = '';
       let i = 0;
-
       const interval = setInterval(function() {
-        asciiArt += rollQuantumDie();
+        const face = rollQuantumDie();
+        asciiArt += face;
         document.getElementById('quantumFieldContainer').innerText = asciiArt;
+
+        // Using Nano Compiler to determine frequency
+        const note = nanoCompiler(face);
+        
+        // Play the sound using that frequency
+        playSound(note);
+        
         i++;
         if (i >= 4000) clearInterval(interval);
       }, 50);
-
-      playSound();
-
-      // Optionally, you can also copy the asciiArt to clipboard when it's done generating.
-      navigator.clipboard.writeText(asciiArt).then(function() {
-        console.log('Copied to clipboard');
-      }).catch(function() {
-        console.log('Failed to copy text to clipboard');
-      });
     }
   </script>
 </body>
