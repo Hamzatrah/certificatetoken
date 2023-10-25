@@ -34,18 +34,16 @@
   <div id="quantumFieldContainer"></div>
 
   <script>
-    async function playSound(quantumField) {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const scale = [262, 294, 330]; // C4, D4, E4 frequencies for a simple melody
-      for (let i = 0; i < 4000; i++) {
-        const oscillator = audioContext.createOscillator();
-        const note = scale[i % 3];
-        oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
-        oscillator.connect(audioContext.destination);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
+    let asciiArt = '';
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const scale = [262, 294, 330, 349, 392, 440, 494]; // Expanded to 7 notes for more variety
+
+    function playSound(note) {
+      const oscillator = audioContext.createOscillator();
+      oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+      oscillator.connect(audioContext.destination);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.05);
     }
 
     function rollQuantumDie() {
@@ -53,42 +51,43 @@
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function fusionProcessor(quantumField) {
-      return quantumField.split("").sort().join("");
+    function nanoCompiler(symbol, index) {
+      // Use ASCII value and index for more randomness
+      const asciiVal = symbol.charCodeAt(0);
+      const modifiedSymbol = String.fromCharCode((asciiVal + index) % 128);
+
+      // Return a modified symbol and a modified frequency
+      return {
+        symbol: modifiedSymbol,
+        frequency: scale[(asciiVal + index) % 7]
+      };
     }
 
-    function generateASCII(quantumField) {
-      let asciiArt = '';
-      for (let i = 0; i < 4000; i++) {
-        asciiArt += rollQuantumDie(); // Using quantum faces to generate the ASCII art
-      }
-      return asciiArt;
-    }
+    function getResponse() {
+      let i = 0;
 
-    async function getResponse() {
-      const user_input = document.getElementById('user_input').value;
-      let quantumField = '';
+      const interval = setInterval(function() {
+        const symbol = rollQuantumDie();
+        const compiled = nanoCompiler(symbol, i);
+        asciiArt += compiled.symbol;
 
-      for (let i = 0; i < 4000; i++) {
-        quantumField += rollQuantumDie();
-      }
+        document.getElementById('quantumFieldContainer').innerText = asciiArt;
 
-      const fusedQuantumField = fusionProcessor(quantumField);
-      const asciiArt = generateASCII(fusedQuantumField);
-      document.getElementById('quantumFieldContainer').innerText = asciiArt;
+        // Play a note based on the modified frequency
+        playSound(compiled.frequency);
 
-      await playSound(fusedQuantumField);
-
-      // Copy to clipboard
-      navigator.clipboard.writeText(asciiArt).then(function() {
-        console.log('Copied to clipboard');
-      }).catch(function() {
-        console.log('Failed to copy text to clipboard');
-      });
-
-      document.getElementById('output').innerHTML = 'Quantum Field: ' + fusedQuantumField.slice(0, 50) + '...';
+        i++;
+        if (i >= 4000) {
+          clearInterval(interval);
+          // Copy to clipboard after the ASCII art is fully generated
+          navigator.clipboard.writeText(asciiArt).then(function() {
+            console.log('Copied to clipboard');
+          }).catch(function() {
+            console.log('Failed to copy text to clipboard');
+          });
+        }
+      }, 50);
     }
   </script>
-
 </body>
 </html>
