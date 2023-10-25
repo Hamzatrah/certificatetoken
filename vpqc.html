@@ -3,22 +3,20 @@
 <head>
   <title>Virtual Quantum Chatbot</title>
   <style>
-    /* Centering the chatbot interface */
+    /* Centering the interface */
     #container {
       position: absolute;
       top: 15%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    /* Container for the quantum field */
-    #quantumFieldContainer {
+
+    /* Quantum field container */
+    #quantumField {
       position: absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      word-wrap: break-word;
-      width: 80vw;
-      max-height: 80vh;
+      width: 100%;
+      height: auto;
       overflow: auto;
     }
   </style>
@@ -29,26 +27,21 @@
     <h1>Virtual Quantum Chatbot</h1>
     <input type="text" id="user_input" placeholder="Type your query...">
     <button onclick="getResponse()">Ask</button>
+    <div id="output">Quantum Field</div>
   </div>
 
-  <div id="quantumFieldContainer">
-    <h2>Quantum Field</h2>
-    <div id="quantumField"></div>
-  </div>
+  <div id="quantumField"></div>
 
   <script>
-    async function playAndDisplay(quantumField) {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      for (let i = 0; i < quantumField.length; i++) {
-        const char = quantumField[i];
-        const oscillator = audioContext.createOscillator();
-        oscillator.frequency.setValueAtTime(char.charCodeAt(0) * 2, audioContext.currentTime);
-        oscillator.connect(audioContext.destination);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
-        document.getElementById('quantumField').innerHTML += char;
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    async function playNote(note) {
+      const oscillator = audioContext.createOscillator();
+      oscillator.frequency.setValueAtTime(note, audioContext.currentTime);
+      oscillator.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.05);
+      await new Promise(resolve => setTimeout(resolve, 50));
     }
 
     function rollQuantumDie() {
@@ -56,38 +49,64 @@
       return faces[Math.floor(Math.random() * 3)];
     }
 
-    function fusionProcessor(die, cat) {
-      return `${die}${cat}`;
-    }
-
-    function generateASCII() {
-      let asciiArt = '';
-      for (let i = 0; i < 4000; i++) {
-        const die = rollQuantumDie();
-        const cat = schrodingersCat();
-        const fused = fusionProcessor(die, cat);
-        asciiArt += fused;
-      }
-      return asciiArt;
-    }
-
     function schrodingersCat() {
       return Math.random() < 0.5 ? 'A' : 'D';
     }
 
-    async function queryVirtualQuantumField() {
-      const asciiArt = generateASCII();
-      await playAndDisplay(asciiArt);
+    function fusionProcessor(die, cat) {
+      const asciiMap = {
+        'HA': '!',
+        'H𝕏': '@',
+        'H+': '#',
+        '𝕏A': '$',
+        '𝕏𝕏': '%',
+        '𝕏+': '^',
+        '+A': '&',
+        '++': '*',
+        '+D': '('
+      };
 
-      navigator.clipboard.writeText(asciiArt).then(function() {
-        console.log('Copied to clipboard');
-      }).catch(function() {
-        console.log('Failed to copy text to clipboard');
-      });
+      const noteMap = {
+        '!': 300,
+        '@': 320,
+        '#': 340,
+        '$': 360,
+        '%': 380,
+        '^': 400,
+        '&': 420,
+        '*': 440,
+        '(': 460
+      };
+
+      const ascii = asciiMap[`${die}${cat}`];
+      const note = noteMap[ascii];
+
+      playNote(note);
+      return ascii;
     }
 
     async function getResponse() {
-      await queryVirtualQuantumField();
+      let quantumField = "";
+      for (let i = 0; i < 4000; i++) {
+        const die = rollQuantumDie();
+        const cat = schrodingersCat();
+        const fused = fusionProcessor(die, cat);
+        quantumField += fused;
+
+        if (i % 100 === 0) {
+          document.getElementById('quantumField').innerText = quantumField;
+          await new Promise(resolve => setTimeout(resolve, 5));
+        }
+      }
+
+      document.getElementById('output').innerText = 'Quantum Field generated!';
+      document.getElementById('quantumField').innerText = quantumField;
+
+      navigator.clipboard.writeText(quantumField).then(() => {
+        console.log('Copied to clipboard');
+      }).catch(() => {
+        console.log('Failed to copy text to clipboard');
+      });
     }
   </script>
 
